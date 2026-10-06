@@ -30,9 +30,10 @@ namespace _Bludoku.Scripts.Score
             _isBoosterEnabled = PlayerPrefs.GetInt(BoosterKey) == 1;
         }
         
-        public static void AddSetScore(int setsCount)
+        public static void AddSetScore(int setsCount, int comboMultiplier = 1)
         {
             int scoreToAdd = setsCount * ScoreForSet;
+            scoreToAdd *= Mathf.Max(1, comboMultiplier);
             scoreToAdd = (int)(scoreToAdd * (IsBoosterEnabled ? BoosterMultiplier : 1));
             
             AddScore(scoreToAdd);

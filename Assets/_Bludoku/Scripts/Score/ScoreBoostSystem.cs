@@ -1,5 +1,13 @@
 namespace _Bludoku.Scripts.Score
 {
+    public enum ComboState
+    {
+        Inactive,
+        Active,
+        Warning,
+        Critical
+    }
+
     public class ScoreBoostSystem
     {
         private int _movesCount;
@@ -24,22 +32,39 @@ namespace _Bludoku.Scripts.Score
             }
         }
 
-        public void FigurePlaced(int removes)
+        public int ComboCount => _comboCount;
+
+        public ComboState State => _comboCount < BoostCombo
+            ? ComboState.Inactive
+            : _movesCount switch
+            {
+                0 => ComboState.Active,
+                1 => ComboState.Warning,
+                _ => ComboState.Critical
+            };
+
+        public void FigurePlaced(int clearedGroups)
         {
-            if (removes == 0)
+            if (clearedGroups <= 0)
             {
                 _movesCount++;
             }
             else
             {
                 _movesCount = 0;
-                _comboCount++;
+                _comboCount += clearedGroups;
             }
             
             if (_movesCount >= MovesThreshold)
             {
                 _comboCount = 0;
             }
+        }
+
+        public void Reset()
+        {
+            _movesCount = 0;
+            _comboCount = 0;
         }
     }
 }
