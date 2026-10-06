@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using _Bludoku.Scripts.Blocks;
 using _Bludoku.Scripts.Boards;
+using _Bludoku.Scripts.Analytics;
 using UnityEngine;
 
 namespace _Bludoku.Scripts.Core
@@ -91,6 +92,7 @@ namespace _Bludoku.Scripts.Core
 
         private void FigurePicked(Figure figure)
         {
+            AnalyticsService.Instance?.Track(new PieceMoveStartedEvent(figure.ID));
         }
 
         private void FigureDragged(Figure figure)
@@ -105,7 +107,10 @@ namespace _Bludoku.Scripts.Core
             if (board.CanPlaceFigure(figure))
                 PlaceFigure(figure);
             else
+            {
                 figure.SnapBack();
+                AnalyticsService.Instance?.Track(new PieceMoveCompletedEvent(figure.ID, false));
+            }
         }
 
         private void RegisterFigure(Figure figure,  int index)
@@ -126,7 +131,9 @@ namespace _Bludoku.Scripts.Core
             figure.OnDragged -= FigureDragged;
             figure.OnReleased -= FigureReleased;
 
+            int pieceId = figure.ID;
             board.SetFigure(figure);
+            AnalyticsService.Instance?.Track(new PieceMoveCompletedEvent(pieceId, true));
 
             _currentFigures.Remove(figure);
             Destroy(figure.gameObject);

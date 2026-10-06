@@ -1,4 +1,5 @@
 using _Bludoku.Scripts.Boards;
+using _Bludoku.Scripts.Analytics;
 using _Bludoku.Scripts.Core;
 using _Bludoku.Scripts.Score;
 using _Bludoku.Scripts.UI;
@@ -29,6 +30,7 @@ namespace _Bludoku.Scripts
 
             board.LoadGrid();
             figuresController.LoadFigures();
+            AnalyticsService.Instance?.Track(new GameStartedEvent(false));
         }
 
         public void NewGame()
@@ -38,16 +40,19 @@ namespace _Bludoku.Scripts
             figuresController.ResetFigures();
             uiMediator.HideGameOver();
             scoreMediator.ResetScore();
+            AnalyticsService.Instance?.Track(new GameStartedEvent(true));
         }
 
         public void SecondChance()
         {
             uiMediator.HideGameOver();
             figuresController.UpdateToEasyFigures();
+            AnalyticsService.Instance?.Track(new SecondChanceUsedEvent());
         }
 
         private void HandleGameOver()
         {
+            AnalyticsService.Instance?.Track(new GameOverEvent(ScoreSystem.Score, ScoreSystem.HighScore));
             uiMediator.ShowGameOver();
         }
     }
