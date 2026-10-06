@@ -124,8 +124,11 @@ namespace _Bludoku.Scripts.Boards
             var result = new ClearResult
             { 
                 ClearedPositions = new List<Vector3>(),
+                ClearedShapes = new List<ClearedShape>(),
                 FiguresRemovedCount = remove
             };
+
+            AddCompletedShapes(_grid, result.ClearedShapes);
 
             for (int row = 0; row < 9; row++)
             {
@@ -150,6 +153,43 @@ namespace _Bludoku.Scripts.Boards
         {
             return transform.position + new Vector3(col - (_grid.GetLength(1) - 1) / 2f,
                 -(row - (_grid.GetLength(0) - 1) / 2f), 0f);
+        }
+
+        private void AddCompletedShapes(int[,] grid, List<ClearedShape> shapes)
+        {
+            for (int row = 0; row < 9; row++)
+            {
+                if (!IsRowComplete(grid, row)) continue;
+                shapes.Add(new ClearedShape
+                {
+                    Type = ClearShapeType.Row,
+                    Center = GridToWorld(row, 4),
+                    Size = new Vector2(9f, 0.82f)
+                });
+            }
+
+            for (int col = 0; col < 9; col++)
+            {
+                if (!IsColumnComplete(grid, col)) continue;
+                shapes.Add(new ClearedShape
+                {
+                    Type = ClearShapeType.Column,
+                    Center = GridToWorld(4, col),
+                    Size = new Vector2(0.82f, 9f)
+                });
+            }
+
+            for (int boxRow = 0; boxRow < 3; boxRow++)
+            for (int boxCol = 0; boxCol < 3; boxCol++)
+            {
+                if (!IsBoxComplete(grid, boxRow, boxCol)) continue;
+                shapes.Add(new ClearedShape
+                {
+                    Type = ClearShapeType.Box,
+                    Center = GridToWorld(boxRow * 3 + 1, boxCol * 3 + 1),
+                    Size = new Vector2(2.82f, 2.82f)
+                });
+            }
         }
 
         public void LoadGrid()
