@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/MoneyTime/Game/LoadingScene/MoneyTime_LoadingScene.unity
     guid: 581b3fbd75afcab4daec74ae4b0deeb3
   - enabled: 1
