@@ -29,8 +29,8 @@ namespace _Bludoku.Scripts.Effects
         {
             float deltaTime = Time.deltaTime;
             _age += deltaTime;
+            _rectTransform.anchoredPosition += _velocity * deltaTime + Vector2.down * (0.5f * _gravity * deltaTime * deltaTime);
             _velocity.y -= _gravity * deltaTime;
-            _rectTransform.anchoredPosition += _velocity * deltaTime;
             _rectTransform.Rotate(0f, 0f, _spinSpeed * deltaTime);
 
             float fadeStart = Mathf.Max(0f, _lifetime - EffectsConstants.HeartShatterFadeDuration);
@@ -44,6 +44,12 @@ namespace _Bludoku.Scripts.Effects
 
             if (_age >= _lifetime)
                 Destroy(gameObject);
+        }
+
+        private void OnDestroy()
+        {
+            if (_image != null && _image.sprite != null)
+                Destroy(_image.sprite);
         }
     }
 }

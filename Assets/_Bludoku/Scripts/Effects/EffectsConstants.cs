@@ -35,18 +35,16 @@ namespace _Bludoku.Scripts.Effects
         public static readonly Color ActiveComboColor = Color.green;
         public static readonly Color WarningComboColor = Color.yellow;
         public static readonly Color CriticalComboColor = Color.red;
-        public const float ComboTextVerticalOffset = -68f;
-        public const float ComboTextWidth = 140f;
-        public const float ComboTextHeight = 48f;
-        public const float ComboTextFontSize = 30f;
+        public const float ComboTextVerticalOffset = -150f;
+        public const float ComboTextWidth = 400f;
+        public const float ComboTextHeight = 100f;
+        public const float ComboTextFontSize = 72f;
 
-        public const float HeartShatterShardMinSize = 15f;
-        public const float HeartShatterShardMaxSize = 33f;
-        public const float HeartShatterHorizontalSpeed = 240f;
-        public const float HeartShatterInitialVerticalSpeed = 100f;
-        public const float HeartShatterGravity = 800f;
-        public const float HeartShatterMinSpinSpeed = 180f;
-        public const float HeartShatterMaxSpinSpeed = 540f;
+        public const float HeartShatterAlpha = 0.65f;
+        public const float HeartShatterHorizontalSpeed = 180f;
+        public const float HeartShatterInitialDownwardSpeed = 40f;
+        public const float HeartShatterGravity = 1500f;
+        public const float HeartShatterSpinSpeed = 45f;
         public const float HeartShatterLifetime = 1.2f;
         public const float HeartShatterFadeDuration = 0.35f;
     }

@@ -34,6 +34,11 @@ namespace _Bludoku.Scripts.Score
             _visualComboCount = _comboCount;
             if (comboText == null)
                 comboText = CreateComboText();
+
+            RectTransform comboRect = comboText.rectTransform;
+            comboRect.anchoredPosition = new Vector2(comboRect.anchoredPosition.x, EffectsConstants.ComboTextVerticalOffset);
+            comboRect.sizeDelta = new Vector2(EffectsConstants.ComboTextWidth, EffectsConstants.ComboTextHeight);
+            comboText.fontSize = EffectsConstants.ComboTextFontSize;
         }
 
         private TMP_Text CreateComboText()
