@@ -80,9 +80,9 @@ namespace _Bludoku.Scripts.Score
             _isBoosterEnabled = boosterEnabled;
         }
 
-        public void PlayHeartShatter()
+        public void PlayHeartShatter(int comboCount)
         {
-            HeartShatterEffect.Play(heart);
+            HeartShatterEffect.Play(heart, comboCount);
         }
 
         public void SetComboState(ComboState state)

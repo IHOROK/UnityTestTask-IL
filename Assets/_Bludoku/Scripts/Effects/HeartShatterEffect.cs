@@ -7,7 +7,7 @@ namespace _Bludoku.Scripts.Effects
     {
         private static Sprite _shardSprite;
 
-        public static void Play(Image heart)
+        public static void Play(Image heart, int comboCount)
         {
             if (heart == null || heart.sprite == null)
                 return;
@@ -26,7 +26,8 @@ namespace _Bludoku.Scripts.Effects
             heart.enabled = false;
             Sprite shardSprite = GetShardSprite();
 
-            for (int i = 0; i < EffectsConstants.HeartShatterShardCount; i++)
+            int shardCount = Mathf.Max(0, comboCount);
+            for (int i = 0; i < shardCount; i++)
             {
                 GameObject shard = new GameObject("Heart Glass Shard", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(HeartShardMotion));
                 RectTransform rect = (RectTransform)shard.transform;

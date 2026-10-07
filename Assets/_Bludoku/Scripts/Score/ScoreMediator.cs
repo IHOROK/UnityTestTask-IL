@@ -41,7 +41,7 @@ namespace _Bludoku.Scripts.Score
             _scoreBoostSystem.FigurePlaced(result.FiguresRemovedCount);
             Debug.Log($"Combo: {_scoreBoostSystem.ComboCount} ({_scoreBoostSystem.State})");
             if (wasBoosterEnabled && !_scoreBoostSystem.IsBoosted)
-                boosterView.PlayHeartShatter();
+                boosterView.PlayHeartShatter(previousComboCount);
 
             if (result.FiguresRemovedCount > 0)
             {

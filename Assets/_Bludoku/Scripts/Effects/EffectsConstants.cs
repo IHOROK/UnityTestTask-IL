@@ -40,9 +40,8 @@ namespace _Bludoku.Scripts.Effects
         public const float ComboTextHeight = 48f;
         public const float ComboTextFontSize = 30f;
 
-        public const int HeartShatterShardCount = 14;
-        public const float HeartShatterShardMinSize = 10f;
-        public const float HeartShatterShardMaxSize = 22f;
+        public const float HeartShatterShardMinSize = 15f;
+        public const float HeartShatterShardMaxSize = 33f;
         public const float HeartShatterHorizontalSpeed = 240f;
         public const float HeartShatterInitialVerticalSpeed = 100f;
         public const float HeartShatterGravity = 800f;
