@@ -1,4 +1,5 @@
 using System;
+using _Bludoku.Scripts.Effects;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -43,12 +44,12 @@ namespace _Bludoku.Scripts.Score
             RectTransform rect = textObject.GetComponent<RectTransform>();
             rect.anchorMin = new Vector2(0.5f, 0.5f);
             rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.anchoredPosition = new Vector2(0f, -68f);
-            rect.sizeDelta = new Vector2(140f, 48f);
+            rect.anchoredPosition = new Vector2(0f, EffectsConstants.ComboTextVerticalOffset);
+            rect.sizeDelta = new Vector2(EffectsConstants.ComboTextWidth, EffectsConstants.ComboTextHeight);
 
             TMP_Text text = textObject.AddComponent<TextMeshProUGUI>();
             text.font = TMP_Settings.defaultFontAsset;
-            text.fontSize = 30f;
+            text.fontSize = EffectsConstants.ComboTextFontSize;
             text.alignment = TextAlignmentOptions.Center;
             text.color = Color.white;
             text.raycastTarget = false;
@@ -67,16 +68,21 @@ namespace _Bludoku.Scripts.Score
 
             if (boosterEnabled)
             {
-                booster.transform.DOScale(Vector3.one, 0.8f)
+                booster.transform.DOScale(Vector3.one, EffectsConstants.BoosterEntranceDuration)
                     .SetEase(Ease.OutElastic)
                     .OnComplete(StartPulse);
             }
             else
             {
-                booster.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InBack);
+                booster.transform.DOScale(Vector3.zero, EffectsConstants.BoosterExitDuration).SetEase(Ease.InBack);
             }
 
             _isBoosterEnabled = boosterEnabled;
+        }
+
+        public void PlayHeartShatter()
+        {
+            HeartShatterEffect.Play(heart);
         }
 
         public void SetComboState(ComboState state)
@@ -147,8 +153,8 @@ namespace _Bludoku.Scripts.Score
                     EffectTarget.DOKill();
                     EffectTarget.localScale = Vector3.one;
                     _arrivalTween = DOTween.Sequence()
-                        .Append(EffectTarget.DOScale(1.5f, 0.25f).SetEase(Ease.OutBack))
-                        .Append(EffectTarget.DOScale(1f, 0.25f).SetEase(Ease.InOutSine));
+                        .Append(EffectTarget.DOScale(EffectsConstants.BoosterArrivalScale, EffectsConstants.BoosterArrivalScaleUpDuration).SetEase(Ease.OutBack))
+                        .Append(EffectTarget.DOScale(1f, EffectsConstants.BoosterArrivalScaleDownDuration).SetEase(Ease.InOutSine));
                 }
             }
         }
@@ -168,29 +174,29 @@ namespace _Bludoku.Scripts.Score
 
             int pulsesPerBurst = _comboState switch
             {
-                ComboState.Active => 1,
-                ComboState.Warning => 1,
-                ComboState.Critical => 2,
+                ComboState.Active => EffectsConstants.ActiveComboPulsesPerBurst,
+                ComboState.Warning => EffectsConstants.WarningComboPulsesPerBurst,
+                ComboState.Critical => EffectsConstants.CriticalComboPulsesPerBurst,
                 _ => 0
             };
             if (pulsesPerBurst == 0)
                 return;
 
-            float pulseDuration = 1f / pulsesPerBurst;
-            float scaleStep = 0.08f;
+            float pulseDuration = EffectsConstants.ComboPulseInterval / pulsesPerBurst;
+            float scaleStep = EffectsConstants.ComboPulseScaleStep;
             Transform pulseTarget = booster;
             pulseTarget.DOKill();
             pulseTarget.localScale = Vector3.one;
             _comboAnimation = DOTween.Sequence()
-                .AppendInterval(1f)
-                .Append(pulseTarget.DOScale(1f + scaleStep, pulseDuration * 0.5f).SetEase(Ease.InOutSine))
-                .Append(pulseTarget.DOScale(1f, pulseDuration * 0.5f).SetEase(Ease.InOutSine));
+                .AppendInterval(EffectsConstants.ComboPulseInterval)
+                .Append(pulseTarget.DOScale(1f + scaleStep, pulseDuration * EffectsConstants.ComboPulseScalePortion).SetEase(Ease.InOutSine))
+                .Append(pulseTarget.DOScale(1f, pulseDuration * EffectsConstants.ComboPulseScalePortion).SetEase(Ease.InOutSine));
 
             for (int pulse = 1; pulse < pulsesPerBurst; pulse++)
             {
                 _comboAnimation
-                    .Append(pulseTarget.DOScale(1f + scaleStep, pulseDuration * 0.5f).SetEase(Ease.InOutSine))
-                    .Append(pulseTarget.DOScale(1f, pulseDuration * 0.5f).SetEase(Ease.InOutSine));
+                    .Append(pulseTarget.DOScale(1f + scaleStep, pulseDuration * EffectsConstants.ComboPulseScalePortion).SetEase(Ease.InOutSine))
+                    .Append(pulseTarget.DOScale(1f, pulseDuration * EffectsConstants.ComboPulseScalePortion).SetEase(Ease.InOutSine));
             }
 
             _comboAnimation.SetLoops(-1, LoopType.Restart);

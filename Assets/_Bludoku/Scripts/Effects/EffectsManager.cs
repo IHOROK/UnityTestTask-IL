@@ -55,18 +55,14 @@ namespace _Bludoku.Scripts.Effects
                 targetPosition.z = board.transform.position.z;
             }
 
-            const float startDelay = 0.07f;//0.15f;
-            const float flightDuration = 0.175f;//0.35f;
-            const float groupStagger = 0.08f;
-
             foreach (ClearedShape shape in result.ClearedShapes)
             {
                 GameObject effect = CreateShapeEffect(shape);
                 _activeComboEffects.Add(effect);
-                yield return new WaitForSeconds(startDelay + groupStagger);
+                yield return new WaitForSeconds(EffectsConstants.ComboFlightStartDelay + EffectsConstants.ComboFlightGroupStagger);
 
-                effect.transform.DOScale(Vector3.zero, flightDuration).SetEase(Ease.InQuart);
-                effect.transform.DOMove(targetPosition, flightDuration)
+                effect.transform.DOScale(Vector3.zero, EffectsConstants.ComboFlightDuration).SetEase(Ease.InQuart);
+                effect.transform.DOMove(targetPosition, EffectsConstants.ComboFlightDuration)
                     .SetEase(Ease.InQuart)
                     .OnComplete(() =>
                     {
@@ -88,10 +84,10 @@ namespace _Bludoku.Scripts.Effects
 
             _cameraShakeTween?.Kill();
             _cameraShakeTween = camera.transform.DOShakePosition(
-                duration: 0.16f,
-                strength: new Vector3(0.07f, 0.07f, 0f),
-                vibrato: 18,
-                randomness: 90f,
+                duration: EffectsConstants.CameraShakeDuration,
+                strength: EffectsConstants.CameraShakeStrength,
+                vibrato: EffectsConstants.CameraShakeVibrato,
+                randomness: EffectsConstants.CameraShakeRandomness,
                 snapping: false,
                 fadeOut: true);
         }

@@ -13,17 +13,14 @@ namespace _Bludoku.Scripts.Score
         private int _movesCount;
         private int _comboCount;
         
-        private const int MovesThreshold = 3;
-        private const int BoostCombo = 2;
-        
         public bool IsBoosted
         {
-            get => _comboCount >= BoostCombo;
+            get => _comboCount >= ComboConstants.BoostCombo;
             set
             {
                 if (value)
                 {
-                    _comboCount = BoostCombo;
+                    _comboCount = ComboConstants.BoostCombo;
                 }
                 else
                 {
@@ -34,7 +31,7 @@ namespace _Bludoku.Scripts.Score
 
         public int ComboCount => _comboCount;
 
-        public ComboState State => _comboCount < BoostCombo
+        public ComboState State => _comboCount < ComboConstants.BoostCombo
             ? ComboState.Inactive
             : _movesCount switch
             {
@@ -55,7 +52,7 @@ namespace _Bludoku.Scripts.Score
                 _comboCount += clearedGroups;
             }
             
-            if (_movesCount >= MovesThreshold)
+            if (_movesCount >= ComboConstants.MovesThreshold)
             {
                 _comboCount = 0;
             }
